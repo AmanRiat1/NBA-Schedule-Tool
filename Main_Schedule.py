@@ -2,46 +2,26 @@ from pandas import DataFrame, read_csv
 import pandas as pd
 import xlrd
 
-
 #Reading Spreadsheet Data and creating file object 
 file = r'NBA_18_19.xls'
 data = pd.read_excel(file)
 
-def Game_Checker(game):
-    '''
-    (str) -> bool
-    Checks if date entered is valid and in the spreadsheet
-
-    >>> Game_Checker("10/16")
-    True
-
-    '''
-    for date in data['Date']:
-        for date_index in range (0,(len(data['Date']))):
-            if game in data['Date'][date_index]:
-                return True
-            else:
-                pass
-          
 def Game_Position(game):
     '''
     (str) -> int
-    Returns the position of the date entered 
+    Returns the list position of the date entered 
 
     >>> Game_Position("12/25")
     70
     '''
-    for date in data['Date']:
-        for date_index in range (0,(len(data['Date']))):
-            if game in data['Date'][date_index]:
-                return date_index
-            else:
-                pass
     
-
-            
+    for date_index in range (0,(len(data['Date']))):
+        if game in data['Date'][date_index]:
+            return date_index
+        else:
+            pass
  
-def Games_Played(game_start,game_end):
+def Games_Played(start, end):
     '''
     (int,int) -> None
     Iterates over the teams in game range to see how many times each team plays
@@ -58,9 +38,6 @@ def Games_Played(game_start,game_end):
 
     '''
 
-    start = int(game_start)
-    end = int(game_end)
-
     #New list with all NBA Teams
     nba_t = (list(data)[1:31])
 
@@ -72,7 +49,7 @@ def Games_Played(game_start,game_end):
     one = []
     zero = []
 
-    #Variable used as counter to retrieve position of team in list
+    #Variable used as counter to retrieve position of team in nba_t list
     team = 0
     
     #Loop iterates over 30 teams
@@ -100,11 +77,11 @@ def Games_Played(game_start,game_end):
             one.append(nba_t[team])
         else:
             zero.append(nba_t[team])
-            
-            
+
+        #iterating to next team
         team += 1
 
-        
+    #Formatted output to only display lists that have teams in them  
     total_games = [zero,one,two,three,four,five]
     control = 5
     while control != -1:
@@ -114,37 +91,30 @@ def Games_Played(game_start,game_end):
             pass
         control = control -1 
 
-
-
-
 #Main
-condition = True 
-        
+
 print ("Please enter dates in 7 day intervals and in the format of MM/DD")
 print ("An example would be from '12/24' to '12/30'")
 
-while condition == True: 
-    game_start = input("Enter the starting date: ")
-    game_end = input("Enter the ending date: ")
+condition = True 
+while condition == True:
+    
+    start_date = input("Enter the starting date: ")
+    end_date = input("Enter the ending date: ")
+    print ('')
     
     #A valid date entry must be five characters 
-    if len(game_start)and len(game_end) < 5  or len(game_start)and len(game_end) >5:
-        print ('')
+    if len(start_date)and len(end_date) < 5  or len(start_date)and len(end_date) >5:
         print ("Please enter valid dates")
     else:
         condition = False 
 
 try:  
-    start,end = Game_Checker(game_start),Game_Checker(game_end)
-
-    Start_Pos = Game_Position(game_start)
-    End_Pos = Game_Position(game_end)
-            
+    Start_Pos = Game_Position(start_date)
+    End_Pos = Game_Position(end_date)
+    
     #Counting Games
     Total_games = Games_Played(Start_Pos,End_Pos)
+
 except:
     print ("Error in date entry, did you make sure to use the MM/DD format?")
-
-
-
-
