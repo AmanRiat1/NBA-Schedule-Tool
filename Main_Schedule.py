@@ -86,14 +86,14 @@ def Games_Played(start, end):
     control = 5
     while control != -1:
         if len(total_games[control]) > 0:
-            print ("Teams with", control, "games:", total_games[control])
+            print ("Teams with", control, "game(s):", total_games[control])
         else:
             pass
         control = control -1 
 
 #Main
 
-print ("Please enter dates in 7 day intervals and in the format of MM/DD")
+print ("Please enter dates in a range from 2-7 and in the format of MM/DD within the NBA season")
 print ("An example would be from '12/24' to '12/30'")
 
 condition = True 
@@ -106,15 +106,31 @@ while condition == True:
     #A valid date entry must be five characters 
     if len(start_date)and len(end_date) < 5  or len(start_date)and len(end_date) >5:
         print ("Please enter valid dates")
+        
     else:
-        condition = False 
+        try:  
+            Start_Pos = Game_Position(start_date)
+            End_Pos = Game_Position(end_date)
 
-try:  
-    Start_Pos = Game_Position(start_date)
-    End_Pos = Game_Position(end_date)
+            if (End_Pos - Start_Pos) > 6 or (End_Pos - Start_Pos) < 1:
+                print ('Make sure the dates entered are within a 2-7 day intervals')
+                continue 
+
+            else: 
+                #Counting Games
+                Total_games = Games_Played(Start_Pos,End_Pos)
+
+        except:
+            print ("Error in date entry, did you make sure to use the MM/DD format?")
+
+    print ('')
+    cont = input("Would you like to try another week? Enter anything to continue or enter nothing to stop: ")
+    if (len(cont)) > 0:
+        continue
+    else:
+        condition = False
+
+
+
+
     
-    #Counting Games
-    Total_games = Games_Played(Start_Pos,End_Pos)
-
-except:
-    print ("Error in date entry, did you make sure to use the MM/DD format?")
