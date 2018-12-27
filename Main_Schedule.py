@@ -89,7 +89,81 @@ def Games_Played(start, end):
             print ("Teams with", control, "game(s):", total_games[control])
         else:
             pass
-        control = control -1 
+        control = control -1
+
+class teams:
+    '''
+    Object stores team name, start date of back to back, and end date of back to back
+    '''
+    
+    def __init__(self,team,date_start,date_end):
+        self.team = team
+        self.start = date_start
+        self.end = date_end
+    
+    def __str__(self):
+        return str(self.team) + ' '+ str(self.start) + ' ' + str(self.end)
+
+    def __repr__(self):
+        return str(self.team)
+
+    def __eq__(self,other):
+
+        if self.start == other.start and self.end == other.end:
+            return True
+        else:
+            return False 
+
+class back:
+    '''
+    Displays teams with backs to backs on the same day 
+    '''
+    def __init__(self,start,end):
+        self.start = start
+        self.end = end
+
+
+    def back_teams(self):
+        #New list with all NBA Teams
+        nba_t = (list(data)[1:31])
+
+        #Counter to retrieve position of team in nba_t list and list of teams with a back to back
+        team = 0
+        b2b = []
+
+        while team <= 29:
+            games_played = 0
+            team_sch = (list(data[nba_t[team]]))
+
+            for game in range (self.start,self.end+1):
+                if type(team_sch[game]) == str and type(team_sch[game+1]) == str:
+                    new_team = teams((nba_t[team]),game,game+1)
+                    b2b.append(new_team)
+
+                else:
+                    pass
+
+            team += 1
+
+        #Loops over teams with back to backs to sort and output teams with back to backs on the same days 
+        while (len(b2b)) > 0:
+            teams_back = []
+
+            #sentinel used to find every team with back to backs on the same day 
+            b2b_start = b2b[0]
+            
+            for nba_team in range (len(b2b)):
+                if b2b_start == b2b[nba_team]:
+                    teams_back.append(b2b[nba_team])
+
+            #removing teams that have been sorted for a back to back from original list   
+            for sorted_team in teams_back:
+                if sorted_team in b2b:
+                    b2b.remove(sorted_team)
+
+            date_one = (teams_back[0]).start
+            date_two = (teams_back[0]).end 
+            print ((data['Date'][date_one][:2]),"-",(data['Date'][date_two][:2]),teams_back) 
 
 #Main
 
@@ -119,6 +193,10 @@ while condition == True:
             else: 
                 #Counting Games
                 Total_games = Games_Played(Start_Pos,End_Pos)
+                print ('')
+                print ('Teams with backs to backs in the week')
+                b2b = back(Start_Pos,End_Pos)
+                b2b.back_teams()
 
         except:
             print ("Error in date entry, did you make sure to use the MM/DD format?")
