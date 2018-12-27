@@ -91,6 +91,7 @@ def Games_Played(start, end):
             pass
         control = control -1
 
+#iterative approach
 def B2B(start,end):
     #69-75
     #New list with all NBA Teams
@@ -101,6 +102,8 @@ def B2B(start,end):
 
     #Variable used as counter to retrieve position of team in nba_t list
     team = 0
+
+    b2b = {}
     
     #Loop iterates over 30 teams
     while team <= 29:
@@ -111,13 +114,90 @@ def B2B(start,end):
         for game in range (start,end):
             if type(team_sch[game]) == str and type(team_sch[game+1]) == str:
                 back_to_back.append(nba_t[team])
+                b2b[nba_t[team]] = game + (game+1)
+                print ((nba_t[team]), "plays a back to back on ", data['Date'][game], 'and ', data['Date'][game+1])
                 break
             else:
                 pass
 
         team += 1
-
+    print (b2b)
     print (back_to_back)
+
+#object oriented approach 
+class teams:
+    def __init__(self,team,date_start,date_end):
+        self.team = team
+        self.start = date_start
+        self.end = date_end
+    
+    def __str__(self):
+        return str(self.team) + ' '+ str(self.start) + ' ' + str(self.end)
+
+    def __repr__(self):
+        return str(self.team) + ' '+ str(self.start) + ' ' + str(self.end)
+
+    def __eq__(self,other):
+
+        if self.start == other.start and self.end == other.end:
+            return True
+        else:
+            return False 
+
+
+class back:
+    def __init__(self,start,end):
+        self.start = start
+        self.end = end
+
+
+    def B2B(self):
+        #69-75 are test dates that correspond with real life dates 12/24-12/30
+        #New list with all NBA Teams
+        nba_t = (list(data)[1:31])
+
+        #Lists that will show teams with a back to back 
+        back_to_back = []
+
+        #Counter to retrieve position of team in nba_t list and list of teams with a back to back
+        team = 0
+        team_b2b = []
+
+
+        while team <= 29:
+            games_played = 0
+            team_sch = (list(data[nba_t[team]]))
+
+            for game in range (self.start,self.end):
+                if type(team_sch[game]) == str and type(team_sch[game+1]) == str:
+                    back_to_back.append(nba_t[team])
+
+                    new_team = teams((nba_t[team]),game,game+1)
+                    team_b2b.append(new_team)
+                    
+                    break
+                else:
+                    pass
+
+            team += 1
+
+        #TODO: Improve to properly format teams with back to backs, everything in this block is in test
+        rand = []
+        x = team_b2b[0]
+
+        for y in range (len(team_b2b)-1):
+            if x == team_b2b[y]:
+                print (y)
+                rand.append(team_b2b[y])
+      
+        print (rand)
+        #TODO#
+        
+        print ('')
+        print  (team_b2b)
+        print ('')
+        print (back_to_back)
+        
     
 
 #Main
