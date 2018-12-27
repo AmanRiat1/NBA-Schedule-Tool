@@ -91,40 +91,6 @@ def Games_Played(start, end):
             pass
         control = control -1
 
-#iterative approach
-def B2B(start,end):
-    #69-75
-    #New list with all NBA Teams
-    nba_t = (list(data)[1:31])
-
-    #Lists that will show teams with a back to back 
-    back_to_back = []
-
-    #Variable used as counter to retrieve position of team in nba_t list
-    team = 0
-
-    b2b = {}
-    
-    #Loop iterates over 30 teams
-    while team <= 29:
-        games_played = 0
-        team_sch = (list(data[nba_t[team]]))
-
-        #For loop iterates over game range user enters 
-        for game in range (start,end):
-            if type(team_sch[game]) == str and type(team_sch[game+1]) == str:
-                back_to_back.append(nba_t[team])
-                b2b[nba_t[team]] = game + (game+1)
-                print ((nba_t[team]), "plays a back to back on ", data['Date'][game], 'and ', data['Date'][game+1])
-                break
-            else:
-                pass
-
-        team += 1
-    print (b2b)
-    print (back_to_back)
-
-#object oriented approach 
 class teams:
     def __init__(self,team,date_start,date_end):
         self.team = team
@@ -156,12 +122,22 @@ class back:
         #New list with all NBA Teams
         nba_t = (list(data)[1:31])
 
+
+
+
+        ####TODO: Improve variable names####
+
         #Lists that will show teams with a back to back 
         back_to_back = []
 
         #Counter to retrieve position of team in nba_t list and list of teams with a back to back
         team = 0
         team_b2b = []
+
+
+        ####TODO: Improve variable names####
+
+
 
 
         while team <= 29:
@@ -181,22 +157,34 @@ class back:
 
             team += 1
 
-        #TODO: Improve to properly format teams with back to backs, everything in this block is in test
-        rand = []
-        x = team_b2b[0]
 
-        for y in range (len(team_b2b)-1):
-            if x == team_b2b[y]:
-                print (y)
-                rand.append(team_b2b[y])
-      
-        print (rand)
-        #TODO#
+
+
+        ####TODO: Loop works, have to improve formatting and fix names to be more clearer ###
+        while (len(team_b2b)) > 1:
+            rand = []
+            x = team_b2b[0]
+
+            
+            for y in range (len(team_b2b)):
+                if x == team_b2b[y]:
+                    rand.append(team_b2b[y])
+
+                
+            for i in rand:
+                if i in team_b2b:
+                    team_b2b.remove(i)
+          
+            print (rand)
         
+            
         print ('')
         print  (team_b2b)
         print ('')
         print (back_to_back)
+
+        ###TODO: Loop works, have to improve formatting and fix names to be more clearer ###
+
         
     
 
