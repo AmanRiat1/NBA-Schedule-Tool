@@ -2,7 +2,7 @@ from pandas import DataFrame, read_csv
 import pandas as pd
 import xlrd
 
-#Reading Spreadsheet Data and creating file object 
+#Reading spreadsheet data and creating file object 
 file = r'NBA_18_19.xls'
 data = pd.read_excel(file)
 
@@ -86,6 +86,7 @@ def Games_Played(start, end):
     control = 5
     while control != -1:
         if len(total_games[control]) > 0:
+            print ('')
             print ("Teams with", control, "game(s):", total_games[control])
         else:
             pass
@@ -102,7 +103,7 @@ class teams:
         self.end = date_end
     
     def __str__(self):
-        return str(self.team) + ' '+ str(self.start) + ' ' + str(self.end)
+        return str(self.team) + ': '+ (data['Date'][self.start]) + ' - ' + (data['Date'][self.end])
 
     def __repr__(self):
         return str(self.team)
@@ -145,29 +146,41 @@ class back:
 
             team += 1
 
-        #Loops over teams with back to backs to sort and output teams with back to backs on the same days 
-        while (len(b2b)) > 0:
-            teams_back = []
-
-            #sentinel used to find every team with back to backs on the same day 
-            b2b_start = b2b[0]
+        #modified bubble sort to sort teams by date the back to back is played 
+        total_teams = len(b2b)
+        for i in range(total_teams):
+            for j in range (0,total_teams-i-1):
+                if (b2b[j]).start > (b2b[j+1]).start:
+                    (b2b[j]), (b2b[j+1])= (b2b[j+1]),(b2b[j])       
             
-            for nba_team in range (len(b2b)):
-                if b2b_start == b2b[nba_team]:
-                    teams_back.append(b2b[nba_team])
+        if len(b2b) > 0:
+            #Loops over teams with back to backs to sort and output teams with back to backs on the same days 
+            while (len(b2b)) > 0:
+                teams_back = []
 
-            #removing teams that have been sorted for a back to back from original list   
-            for sorted_team in teams_back:
-                if sorted_team in b2b:
-                    b2b.remove(sorted_team)
+                #sentinel used to find every team with back to backs on the same day
+                b2b_start = b2b[0]
+                
+                for nba_team in range (len(b2b)):
+                    if b2b_start == b2b[nba_team]:
+                        teams_back.append(b2b[nba_team])
 
-            date_one = (teams_back[0]).start
-            date_two = (teams_back[0]).end 
-            print ((data['Date'][date_one][:2]),"-",(data['Date'][date_two][:2]),teams_back) 
+                #removing teams that have been sorted for a back to back from original list   
+                for sorted_team in teams_back:
+                    if sorted_team in b2b:
+                        b2b.remove(sorted_team)
+
+                date_one = (teams_back[0]).start
+                date_two = (teams_back[0]).end 
+                print ((data['Date'][date_one][:2]) ,"-", (data['Date'][date_two][:2]) +':', teams_back)
+        else:
+            print ('No back to backs')
 
 #Main
 
-print ("Please enter dates in a range from 2-7 and in the format of MM/DD within the NBA season")
+print ("Please enter dates in a range from 2-7 days. Make sure to use the MM/DD\
+ format and the dates are within the NBA season")
+print ('')
 print ("An example would be from '12/24' to '12/30'")
 
 condition = True 
@@ -194,7 +207,7 @@ while condition == True:
                 #Counting Games
                 Total_games = Games_Played(Start_Pos,End_Pos)
                 print ('')
-                print ('Teams with backs to backs in the week')
+                print ('Teams with backs to backs in the week:')
                 b2b = back(Start_Pos,End_Pos)
                 b2b.back_teams()
 
