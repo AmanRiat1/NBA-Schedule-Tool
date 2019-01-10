@@ -1,1 +1,0 @@
-web: python Main_Schedule.py

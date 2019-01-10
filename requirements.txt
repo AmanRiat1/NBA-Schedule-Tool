@@ -1,5 +1,2 @@
 pandas
 xlrd
-django
-gunicorn
-django-heroku
