@@ -134,13 +134,15 @@ class back:
 
         while team <= 29:
             games_played = 0
-            team_sch = (list(data([nba_t[team]])))
+            team_sch = (list(data[nba_t[team]]))
   
 
             for game in range (self.start,self.end+1):
                 if type(team_sch[game]) == str and type(team_sch[game+1]) == str:
                     new_team = teams((nba_t[team]),game,game+1)
                     b2b.append(new_team)
+                else:
+                    pass
 
             team += 1
 
