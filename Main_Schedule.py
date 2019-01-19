@@ -64,7 +64,7 @@ def Games_Played(start, end):
             else:
                 pass
 
-        #Adding teams to lists with the amount of games they play in a week    
+   
         if games_played == 5:
             five.append(nba_t[team])
         elif games_played == 4:
@@ -78,7 +78,7 @@ def Games_Played(start, end):
         else:
             zero.append(nba_t[team])
 
-        #iterating to next team
+ 
         team += 1
 
     #Formatted output to only display lists that have teams in them  
@@ -91,6 +91,33 @@ def Games_Played(start, end):
         else:
             pass
         control = control -1
+
+def Week_Games(start,end):
+    '''
+    (int, int) -> None
+    Prints out games days that are light
+
+    >>> Week_Games(76,82)
+    Light Game Days:
+    Tu-01/01 :  5  games
+    Th-01/03 :  3  games
+    '''
+    #TODO: Add additional output to show which teams play on that day 
+    print ("Light Game Days:")
+    nba_teams = (list(data)[1:31])
+
+    for date in range (start,end+1):
+        games = 0
+        for team in range (0,30):
+            current_team = (list(data[nba_teams[team]]))
+            if type(current_team[date]) == str:
+                    games += 1
+               
+        if games == 0:
+            print (data['Date'][date][:2] + ': ' + 'No games!')
+        elif games < 14:
+            print (data['Date'][date][:2] +': ' + str(games//2), ' games')
+            
 
 class teams:
     '''
@@ -145,7 +172,6 @@ class back:
                     pass
 
             team += 1
-
         #modified bubble sort to sort teams by date the back to back is played 
         total_teams = len(b2b)
         for i in range(total_teams):
@@ -188,7 +214,6 @@ while condition == True:
     
     start_date = input("Enter the starting date: ")
     end_date = input("Enter the ending date: ")
-    print ('')
     
     #A valid date entry must be five characters 
     if len(start_date)and len(end_date) < 5  or len(start_date)and len(end_date) >5:
@@ -205,11 +230,17 @@ while condition == True:
 
             else: 
                 #Counting Games
-                Total_games = Games_Played(Start_Pos,End_Pos)
+                Games_Played(Start_Pos,End_Pos)
+
+                print ('')
                 print ('')
                 print ('Teams with backs to backs in the week:')
+        
                 b2b = back(Start_Pos,End_Pos)
                 b2b.back_teams()
+                print ('')
+                print ('')
+                Week_Games(Start_Pos, End_Pos)
 
         except:
             print ("Error in date entry, did you make sure to use the MM/DD format?")
