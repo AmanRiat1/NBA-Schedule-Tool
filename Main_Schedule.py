@@ -106,30 +106,37 @@ def Week_Games(start,end):
     print ("Light Game Days:")
     nba_teams = (list(data)[1:31])
 
+
     for date in range (start,end+1):
+        teamsInAWeek =[]
         games = 0
         for team in range (0,30):
             current_team = (list(data[nba_teams[team]]))
             if type(current_team[date]) == str:
                     games += 1
+                    teamsInAWeek.append(teams(nba_teams[team]))
                
         if games == 0:
             print (data['Date'][date][:2] + ': ' + 'No games!')
         elif games < 14:
             print (data['Date'][date][:2] +': ' + str(games//2), ' games')
-            
+            print ('Teams playing this day ',teamsInAWeek)
+            print('')
+
 
 class teams:
     '''
     Object stores team name, start date of back to back, and end date of back to back
     '''
     
-    def __init__(self,team,date_start,date_end):
+    def __init__(self,team,date_start = 0,date_end = 0):
         self.team = team
         self.start = date_start
         self.end = date_end
     
     def __str__(self):
+        if (self.start ==0 and self.end ==0):
+            return str(self.team)
         return str(self.team) + ': '+ (data['Date'][self.start]) + ' - ' + (data['Date'][self.end])
 
     def __repr__(self):
@@ -220,11 +227,11 @@ while condition == True:
         print ("Please enter valid dates")
         
     else:
-        try:  
+        #try:  
             Start_Pos = Game_Position(start_date)
             End_Pos = Game_Position(end_date)
 
-            if (End_Pos - Start_Pos) > 6 or (End_Pos - Start_Pos) < 1:
+            if (End_Pos - Start_Pos) > 7 or (End_Pos - Start_Pos) < 1:
                 print ('Make sure the dates entered are within a 2-7 day intervals')
                 continue 
 
@@ -242,8 +249,8 @@ while condition == True:
                 print ('')
                 Week_Games(Start_Pos, End_Pos)
 
-        except:
-            print ("Error in date entry, did you make sure to use the MM/DD format?")
+        #except:
+            #print ("Error in date entry, did you make sure to use the MM/DD format?")
 
     print ('')
     cont = input("Would you like to try another week? Enter anything to continue or enter nothing to stop: ")
